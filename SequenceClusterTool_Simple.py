@@ -6,9 +6,9 @@ def read_fasta(filename):
     with open(filename, "r") as file:
         for line in file:
             line = line.strip()
+
             if not line:
                 continue
-
             if line.startswith(">"):
                 if current_name:
                     sequences[current_name] = "".join(current_seq)
@@ -19,7 +19,6 @@ def read_fasta(filename):
 
         if current_name:
             sequences[current_name] = "".join(current_seq)
-
     return sequences
 
 
@@ -28,6 +27,7 @@ def calculate_gc(seq):
         return 0.0
     g_count = seq.count("G")
     c_count = seq.count("C")
+
     gc_percent = ((g_count + c_count) / len(seq)) * 100
     return round(gc_percent, 2)
 
@@ -48,6 +48,7 @@ def calculate_similarity(seq1, seq2):
 
 def cluster_sequences(sequences, threshold=80.0):
     clusters = []
+
     for name in sequences:
         placed = False
         seq = sequences[name]
@@ -68,19 +69,15 @@ def cluster_sequences(sequences, threshold=80.0):
 
 
 if __name__ == "__main__":
-    test_sequences = {
-        "Sequence 1": "ATGCGTACGTAG",
-        "Sequence 2": "ATGCGTACGTAA",
-        "Sequence 3": "ATGCGTACGTAC",
-        "Sequence 4": "GGCTAACCGGTT",
-        "Sequence 5": "GGCTAACCGGTA"
-    }
-
-    threshold = 80.0
-
     print("==================================================")
     print("        SEQUENCE CLUSTERING TOOL")
     print("==================================================")
+
+    filename = input("\nEnter the FASTA file path: ")
+    test_sequences = read_fasta(filename)
+
+    threshold = float(input("Enter similarity threshold (0-100): "))
+
     print(f"\nTotal Sequences: {len(test_sequences)}")
     print(f"Similarity Threshold: {threshold}%\n")
 
